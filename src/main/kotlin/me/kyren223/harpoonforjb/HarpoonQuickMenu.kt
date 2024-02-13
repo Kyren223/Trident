@@ -1,6 +1,10 @@
+@file:Suppress("SameParameterValue")
+
 package me.kyren223.harpoonforjb
 
+import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.editor.LogicalPosition
+import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.EditorTextField
 import com.maddyhome.idea.vim.KeyHandler
@@ -41,7 +45,7 @@ class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
                 simulateKeyPress("<ESC>", editor, context)
             }
 
-            override fun focusLost(e: FocusEvent?) { /* Do nothing */}
+            override fun focusLost(e: FocusEvent?) { /* Do nothing */ }
         })
 
         return editorTextField
@@ -53,5 +57,16 @@ class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
 
     override fun getPreferredFocusedComponent(): JComponent? {
         return this.editorTextField
+    }
+
+    fun select() {
+        if (this.editorTextField.editor == null) return
+        HarpoonState.quickMenuContent = this.editorTextField.text
+        HarpoonState.quickMenuSelectedIndex = this.editorTextField.editor!!.caretModel.logicalPosition.line
+        doOKAction()
+    }
+
+    override fun createSouthPanel(): JComponent? {
+        return null
     }
 }

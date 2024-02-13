@@ -9,8 +9,9 @@ import com.intellij.openapi.vfs.VirtualFile
 object HarpoonState {
     private var projectFiles: MutableMap<String, MutableList<VirtualFile>> = mutableMapOf()
     private const val HARPOON_LIST_KEY = "HarpoonList"
-    private var quickMenuSelectedIndex: Int? = null
-    private var quickMenuContent: String? = ""
+    private var quickMenu: HarpoonQuickMenu? = null
+    var quickMenuSelectedIndex: Int? = null
+    var quickMenuContent: String? = ""
 
     fun setFile(project: Project, index: Int, file: VirtualFile) {
         if (index < 0) return
@@ -85,8 +86,8 @@ object HarpoonState {
                 .replace(project.basePath!!, "...")
                 .trim()
 
-        val quickMenu = HarpoonQuickMenu(content)
-        val result = quickMenu.showAndGet()
+        quickMenu = HarpoonQuickMenu(content)
+        val result = quickMenu!!.showAndGet()
 
         if (content != quickMenuContent) {
             // Update the content
@@ -94,7 +95,13 @@ object HarpoonState {
         }
 
         if (!result || quickMenuSelectedIndex == null) return
+        println("Selected index: $quickMenuSelectedIndex")
         val file = selectFile(project, quickMenuSelectedIndex!!) ?: return
         FileEditorManager.getInstance(project).openFile(file, true)
+    }
+
+    fun quickMenuSelect() {
+        if (quickMenu == null || !quickMenu!!.isShowing) return
+        quickMenu!!.select()
     }
 }

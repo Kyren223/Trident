@@ -93,5 +93,11 @@
             <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
         </action>
 
+        <action id="HarpoonQuickMenuSelect"
+                class="me.kyren223.harpoonforjb.HarpoonQuickMenuSelectAction"
+                text="Quick Menu Select">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+
     </actions>
 </idea-plugin>
