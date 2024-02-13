@@ -38,4 +38,60 @@
                 displayName="HarpoonForJB Settings"/>
         <applicationService serviceImplementation="me.kyren223.harpoonforjb.AppSettingsState"/>
     </extensions>
+
+    <actions>
+        <group id="me.kyren223.harpoonforjb.mainGroup"
+               text="Harpoon" description="Harpoon"
+               popup="true">
+        </group>
+
+        <!-- Harpoon Select Buffer -->
+        <action id="HarpoonSelect1"
+                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+                text="Select Buffer 1">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+        <action id="HarpoonSelect2"
+                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+                text="Select Buffer 2">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+        <action id="HarpoonSelect3"
+                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+                text="Select Buffer 3">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+        <action id="HarpoonSelect4"
+                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+                text="Select Buffer 4">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+
+        <!-- Select Previous & Next Buffer -->
+        <action id="HarpoonSelectPrev"
+                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+                text="Select Previous Buffer">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+        <action id="HarpoonSelectNext"
+                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+                text="Select Next Buffer">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+
+        <!-- Append -->
+        <action id="HarpoonAppend"
+                class="me.kyren223.harpoonforjb.HarpoonAppendAction"
+                text="Append File">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+
+        <!-- UI Actions -->
+        <action id="HarpoonToggleQuickMenu"
+                class="me.kyren223.harpoonforjb.HarpoonToggleQuickMenuAction"
+                text="Toggle Quick Menu">
+            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+        </action>
+
+    </actions>
 </idea-plugin>
