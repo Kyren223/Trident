@@ -1,6 +1,7 @@
 package me.kyren223.harpoonforjb
 
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
@@ -8,6 +9,8 @@ import com.intellij.openapi.vfs.VirtualFile
 object HarpoonState {
     private var projectFiles: MutableMap<String, MutableList<VirtualFile>> = mutableMapOf()
     private const val HARPOON_LIST_KEY = "HarpoonList"
+    private var quickMenuSelectedIndex: Int? = null
+    private var quickMenuContent: String? = ""
 
     fun setFile(project: Project, index: Int, file: VirtualFile) {
         if (index < 0) return
@@ -73,5 +76,25 @@ object HarpoonState {
     fun getFileCount(project: Project): Int {
         loadProject(project)
         return projectFiles[project.name]!!.size
+    }
+
+    fun toggleQuickMenu(project: Project) {
+        loadProject(project)
+        val content = projectFiles[project.name]!!
+                .joinToString("\n") { it.path }
+                .replace(project.basePath!!, "...")
+                .trim()
+
+        val quickMenu = HarpoonQuickMenu(content)
+        val result = quickMenu.showAndGet()
+
+        if (content != quickMenuContent) {
+            // Update the content
+            // TODO: Update the content
+        }
+
+        if (!result || quickMenuSelectedIndex == null) return
+        val file = selectFile(project, quickMenuSelectedIndex!!) ?: return
+        FileEditorManager.getInstance(project).openFile(file, true)
     }
 }
