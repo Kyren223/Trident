@@ -6,12 +6,8 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 
 object HarpoonState {
-    private var previousIndex: Int? = null
-    private var currentIndex: Int? = null
-    private var nextIndex: Int? = null
-
     private var projectFiles: MutableMap<String, MutableList<VirtualFile>> = mutableMapOf()
-    private val HARPOON_LIST_KEY = "HarpoonList"
+    private const val HARPOON_LIST_KEY = "HarpoonList"
 
     fun setFile(project: Project, index: Int, file: VirtualFile) {
         if (index < 0) return
@@ -65,5 +61,17 @@ object HarpoonState {
                 .map { it.path }
                 .toList()
         properties.setList(HARPOON_LIST_KEY, stringList)
+    }
+
+    fun getIndexOfFile(project: Project, data: VirtualFile?): Int {
+        loadProject(project)
+        val files = projectFiles[project.name]
+        if (files == null || data == null) return -1
+        return files.indexOfFirst { it.path == data.path }
+    }
+
+    fun getFileCount(project: Project): Int {
+        loadProject(project)
+        return projectFiles[project.name]!!.size
     }
 }
