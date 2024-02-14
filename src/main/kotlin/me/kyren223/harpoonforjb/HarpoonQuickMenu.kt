@@ -2,9 +2,7 @@
 
 package me.kyren223.harpoonforjb
 
-import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.editor.LogicalPosition
-import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.EditorTextField
 import com.maddyhome.idea.vim.KeyHandler
@@ -27,7 +25,6 @@ class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
     }
 
     override fun createCenterPanel(): JComponent {
-        println("Content: \n$content")
         val settings = AppSettingsState.instance
         editorTextField = EditorTextField(this.content)
         editorTextField.setOneLineMode(false)
@@ -55,15 +52,24 @@ class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
         KeyHandler.getInstance().handleKey(editor, injector.parser.parseKeys(key)[0], context)
     }
 
-    override fun getPreferredFocusedComponent(): JComponent? {
+    override fun getPreferredFocusedComponent(): JComponent {
         return this.editorTextField
     }
 
     fun select() {
         if (this.editorTextField.editor == null) return
-        HarpoonState.quickMenuContent = this.editorTextField.text
         HarpoonState.quickMenuSelectedIndex = this.editorTextField.editor!!.caretModel.logicalPosition.line
         doOKAction()
+    }
+
+    override fun doOKAction() {
+        HarpoonState.quickMenuContent = editorTextField.text
+        super.doOKAction()
+    }
+
+    override fun doCancelAction() {
+        HarpoonState.quickMenuContent = editorTextField.text
+        super.doCancelAction()
     }
 
     override fun createSouthPanel(): JComponent? {

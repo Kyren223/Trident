@@ -13,14 +13,6 @@ object HarpoonState {
     var quickMenuSelectedIndex: Int? = null
     var quickMenuContent: String? = ""
 
-    fun setFile(project: Project, index: Int, file: VirtualFile) {
-        if (index < 0) return
-        loadProject(project)
-        val files = projectFiles[project.name]
-        if (files!!.size <= index) return
-        files[index] = file
-        saveProject(project)
-    }
 
     fun appendFile(project: Project, file: VirtualFile) {
         if (!file.isValid) return
@@ -80,28 +72,60 @@ object HarpoonState {
     }
 
     fun toggleQuickMenu(project: Project) {
-        loadProject(project)
-        val content = projectFiles[project.name]!!
-                .joinToString("\n") { it.path }
-                .replace(project.basePath!!, "...")
-                .trim()
+        if (quickMenu != null && quickMenu!!.isShowing) {
+            println("Canceling quick menu")
+            quickMenu!!.doCancelAction()
+            return
+        }
 
+        loadProject(project)
+        val content = getProjectContent(project)
         quickMenu = HarpoonQuickMenu(content)
         val result = quickMenu!!.showAndGet()
 
-        if (content != quickMenuContent) {
+        if (quickMenuContent != null && content != quickMenuContent) {
             // Update the content
-            // TODO: Update the content
+//            println("Content Before:\n${quickMenuContent}")
+            retrieveProjectFiles(project, quickMenuContent!!)
+//            val contentAfter = projectFiles[project.name]!!
+//                    .joinToString("\n") { it.path }
+//                    .trim()
+//            println("Content After:\n${contentAfter}")
+            saveProject(project)
         }
 
-        if (!result || quickMenuSelectedIndex == null) return
-        println("Selected index: $quickMenuSelectedIndex")
-        val file = selectFile(project, quickMenuSelectedIndex!!) ?: return
+        if (!result) return
+        val index = quickMenuSelectedIndex ?: return
+        quickMenuSelectedIndex = null
+        val file = selectFile(project, index) ?: return
         FileEditorManager.getInstance(project).openFile(file, true)
     }
 
     fun quickMenuSelect() {
         if (quickMenu == null || !quickMenu!!.isShowing) return
         quickMenu!!.select()
+    }
+
+    private fun getProjectContent(project: Project): String {
+        val content = projectFiles[project.name]!!
+                .joinToString("\n") { it.path }
+                .replace(project.basePath!!, "...")
+                .trim()
+        return content
+    }
+
+    private fun retrieveProjectFiles(project: Project, content: String) {
+        loadProject(project)
+        val files = content
+                .split("\n")
+                .asSequence()
+                .map { it.trim() }
+                .map { it.replace("...", project.basePath!!) }
+                .filter { it.isNotBlank() }
+                .map { LocalFileSystem.getInstance().findFileByPath(it) }
+                .filterNotNull()
+                .filter { it.isValid }
+                .toMutableList()
+        projectFiles[project.name] = files
     }
 }
