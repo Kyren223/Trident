@@ -10,6 +10,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 @State(name = "me.kyren223.harpoonforjb.AppSettingsState", storages = [Storage("SdkSettingsPlugin.xml")])
 class AppSettingsState : PersistentStateComponent<AppSettingsState?> {
 
+    var harpoonEnterToSelect = true
     var harpoonWidth = 800
     var harpoonHeight = 400
     var harpoonFontSize = 20

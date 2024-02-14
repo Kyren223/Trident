@@ -21,6 +21,7 @@ class AppSettingsConfigurable : Configurable {
         if (settings.harpoonWidth != this.settings!!.getHarpoonWidth()) return true
         if (settings.harpoonHeight != this.settings!!.getHarpoonHeight()) return true
         if (settings.harpoonFontSize != this.settings!!.getHarpoonFontSize()) return true
+        if (settings.harpoonEnterToSelect != this.settings!!.getHarpoonEnterToSelect()) return true
         return false
     }
 
@@ -29,6 +30,7 @@ class AppSettingsConfigurable : Configurable {
         settings.harpoonWidth = this.settings!!.getHarpoonWidth()
         settings.harpoonHeight = this.settings!!.getHarpoonHeight()
         settings.harpoonFontSize = this.settings!!.getHarpoonFontSize()
+        settings.harpoonEnterToSelect = this.settings!!.getHarpoonEnterToSelect()
     }
 
     override fun reset() {
@@ -39,6 +41,7 @@ class AppSettingsConfigurable : Configurable {
         this.settings!!.setHarpoonWidth(settings.harpoonWidth)
         this.settings!!.setHarpoonHeight(settings.harpoonHeight)
         this.settings!!.setHarpoonFontSize(settings.harpoonFontSize)
+        this.settings!!.setHarpoonEnterToSelect(settings.harpoonEnterToSelect)
     }
 
     override fun disposeUIResources() {
