@@ -32,6 +32,7 @@ object TridentState {
     private fun loadProject(project: Project) {
         if (project.name in projectFiles) return
         val properties = PropertiesComponent.getInstance(project)
+
         val list = properties.getList(TRIDENT_LIST_KEY)
         if (list == null) {
             projectFiles[project.name] = mutableListOf()
