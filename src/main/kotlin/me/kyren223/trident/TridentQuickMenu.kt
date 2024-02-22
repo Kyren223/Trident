@@ -1,6 +1,6 @@
 @file:Suppress("SameParameterValue")
 
-package me.kyren223.harpoonforjb
+package me.kyren223.trident
 
 import com.intellij.openapi.editor.LogicalPosition
 import com.intellij.openapi.ui.DialogWrapper
@@ -14,13 +14,13 @@ import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
 import javax.swing.JComponent
 
-class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
+class TridentQuickMenu(private val content: String) : DialogWrapper(true) {
     private lateinit var editorTextField: EditorTextField
 
     init {
         val settings = AppSettingsState.instance
-        this.title = "Harpoon Quick Menu"
-        setSize(settings.harpoonWidth, settings.harpoonHeight)
+        this.title = "Trident Quick Menu"
+        setSize(settings.width, settings.height)
         super.init()
     }
 
@@ -29,7 +29,7 @@ class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
         editorTextField = EditorTextField(this.content)
         editorTextField.setOneLineMode(false)
         editorTextField.addSettingsProvider {
-            it.setFontSize(settings.harpoonFontSize)
+            it.setFontSize(settings.fontSize)
             it.isInsertMode = true
             it.caretModel.moveToLogicalPosition(LogicalPosition(0, 0))
             it.settings.isLineNumbersShown = true
@@ -58,17 +58,17 @@ class HarpoonQuickMenu(private val content: String) : DialogWrapper(true) {
 
     fun select() {
         if (this.editorTextField.editor == null) return
-        HarpoonState.quickMenuSelectedIndex = this.editorTextField.editor!!.caretModel.logicalPosition.line
+        TridentState.quickMenuSelectedIndex = this.editorTextField.editor!!.caretModel.logicalPosition.line
         doOKAction()
     }
 
     override fun doOKAction() {
-        HarpoonState.quickMenuContent = editorTextField.text
+        TridentState.quickMenuContent = editorTextField.text
         super.doOKAction()
     }
 
     override fun doCancelAction() {
-        HarpoonState.quickMenuContent = editorTextField.text
+        TridentState.quickMenuContent = editorTextField.text
         super.doCancelAction()
     }
 

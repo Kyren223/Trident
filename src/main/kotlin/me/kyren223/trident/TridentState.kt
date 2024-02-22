@@ -1,4 +1,4 @@
-package me.kyren223.harpoonforjb
+package me.kyren223.trident
 
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -6,13 +6,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 
-object HarpoonState {
+object TridentState {
     private var projectFiles: MutableMap<String, MutableList<VirtualFile>> = mutableMapOf()
-    private const val HARPOON_LIST_KEY = "HarpoonList"
-    private var quickMenu: HarpoonQuickMenu? = null
+    private const val TRIDENT_LIST_KEY = "TridentList"
+    private var quickMenu: TridentQuickMenu? = null
     var quickMenuSelectedIndex: Int? = null
     var quickMenuContent: String? = ""
-
 
     fun appendFile(project: Project, file: VirtualFile) {
         if (!file.isValid) return
@@ -33,7 +32,7 @@ object HarpoonState {
     private fun loadProject(project: Project) {
         if (project.name in projectFiles) return
         val properties = PropertiesComponent.getInstance(project)
-        val list = properties.getList(HARPOON_LIST_KEY)
+        val list = properties.getList(TRIDENT_LIST_KEY)
         if (list == null) {
             projectFiles[project.name] = mutableListOf()
             return
@@ -56,7 +55,7 @@ object HarpoonState {
                 .filter { it.isValid }
                 .map { it.path }
                 .toList()
-        properties.setList(HARPOON_LIST_KEY, stringList)
+        properties.setList(TRIDENT_LIST_KEY, stringList)
     }
 
     fun getIndexOfFile(project: Project, data: VirtualFile?): Int {
@@ -73,24 +72,17 @@ object HarpoonState {
 
     fun toggleQuickMenu(project: Project) {
         if (quickMenu != null && quickMenu!!.isShowing) {
-            println("Canceling quick menu")
             quickMenu!!.doCancelAction()
             return
         }
 
         loadProject(project)
         val content = getProjectContent(project)
-        quickMenu = HarpoonQuickMenu(content)
+        quickMenu = TridentQuickMenu(content)
         val result = quickMenu!!.showAndGet()
 
         if (quickMenuContent != null && content != quickMenuContent) {
-            // Update the content
-//            println("Content Before:\n${quickMenuContent}")
             retrieveProjectFiles(project, quickMenuContent!!)
-//            val contentAfter = projectFiles[project.name]!!
-//                    .joinToString("\n") { it.path }
-//                    .trim()
-//            println("Content After:\n${contentAfter}")
             saveProject(project)
         }
 

@@ -1,11 +1,11 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>me.kyren223.harpoonforjb</id>
+    <id>me.kyren223.trident</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>HarpoonForJB</name>
+    <name>Trident</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="ulmliad223@gmail.com" url="https://discord.gg/7vpTv7m3QR">Kyren223</vendor>
@@ -14,89 +14,93 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    <h3>HarpoonForJB</h3>
-    Originally created by ThePrimeagen as a Neovim plugin, "Harpoon"<br>
-    revolutionized code navigation with its intuitive targeting and<br>
-    seamless traversal capabilities.<br>
-    HarpoonForJB aims to bring the same experience to JetBrains IDEs.<br>
+    <h3>Trident</h3>
+    Trident is a plugin for JetBrains IDEs that provides a fast and intuitive<br>
+    way to navigate between files effortlessly.<br>
     <br>
-    For fans of the original "Harpoon" plugin, "HarpoonForJB"<br>
-    offers a familiar yet enhanced experience tailored for JetBrains IDEs.<br>
+    The plugin is inspired by the "Harpoon" plugin made<br>
+    by ThePrimeagen for Neovim.<br>
+    <br>
+    Trident aims to bring the same experience to JetBrains IDEs.<br>
+    but with additional features and proper integration with the IDE.<br>
+
+    Want to help contribute to the project?
+    Source code: <a href="https://github.com/Kyren223/Trident">GitHub Repo</a><br>
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends optional="true"  config-file="HarpoonForJB-IdeaVim.xml">IdeaVIM</depends>
+    <depends optional="true"  config-file="Trident-IdeaVim.xml">IdeaVIM</depends>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable
                 parentId="tools"
-                instance="me.kyren223.harpoonforjb.AppSettingsConfigurable"
-                id="me.kyren223.harpoonforjb.AppSettingsConfigurable"
-                displayName="HarpoonForJB Settings"/>
-        <applicationService serviceImplementation="me.kyren223.harpoonforjb.AppSettingsState"/>
+                instance="me.kyren223.trident.AppSettingsConfigurable"
+                id="me.kyren223.trident.AppSettingsConfigurable"
+                displayName="Trident Settings"/>
+        <applicationService serviceImplementation="me.kyren223.trident.AppSettingsState"/>
     </extensions>
 
     <actions>
-        <group id="me.kyren223.harpoonforjb.mainGroup"
-               text="Harpoon" description="Harpoon"
+        <group id="me.kyren223.trident.mainGroup"
+               text="Trident" description="Trident"
                popup="true">
         </group>
 
-        <!-- Harpoon Select Buffer -->
-        <action id="HarpoonSelect1"
-                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+        <!-- Trident Select Buffer -->
+        <action id="TridentSelect1"
+                class="me.kyren223.trident.TridentSelectAction"
                 text="Select Buffer 1">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
-        <action id="HarpoonSelect2"
-                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+        <action id="TridentSelect2"
+                class="me.kyren223.trident.TridentSelectAction"
                 text="Select Buffer 2">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
-        <action id="HarpoonSelect3"
-                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+        <action id="TridentSelect3"
+                class="me.kyren223.trident.TridentSelectAction"
                 text="Select Buffer 3">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
-        <action id="HarpoonSelect4"
-                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+        <action id="TridentSelect4"
+                class="me.kyren223.trident.TridentSelectAction"
                 text="Select Buffer 4">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <!-- Select Previous & Next Buffer -->
-        <action id="HarpoonSelectPrev"
-                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+        <action id="TridentSelectPrev"
+                class="me.kyren223.trident.TridentSelectAction"
                 text="Select Previous Buffer">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
-        <action id="HarpoonSelectNext"
-                class="me.kyren223.harpoonforjb.HarpoonSelectAction"
+        <action id="TridentSelectNext"
+                class="me.kyren223.trident.TridentSelectAction"
                 text="Select Next Buffer">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <!-- Append -->
-        <action id="HarpoonAppend"
-                class="me.kyren223.harpoonforjb.HarpoonAppendAction"
+        <action id="TridentAppend"
+                class="me.kyren223.trident.TridentAppendAction"
                 text="Append File">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <!-- UI Actions -->
-        <action id="HarpoonToggleQuickMenu"
-                class="me.kyren223.harpoonforjb.HarpoonToggleQuickMenuAction"
+        <action id="TridentToggleQuickMenu"
+                class="me.kyren223.trident.TridentToggleQuickMenuAction"
                 text="Toggle Quick Menu">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
-        <action id="HarpoonQuickMenuSelect"
-                class="me.kyren223.harpoonforjb.HarpoonQuickMenuSelectAction"
+        <action id="TridentQuickMenuSelect"
+                class="me.kyren223.trident.TridentQuickMenuSelectAction"
                 text="Quick Menu Select">
-            <add-to-group group-id="me.kyren223.harpoonforjb.mainGroup"/>
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
     </actions>
