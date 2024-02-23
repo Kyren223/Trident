@@ -6,7 +6,7 @@ import com.maddyhome.idea.vim.api.injector
 import com.maddyhome.idea.vim.command.MappingMode
 import com.maddyhome.idea.vim.key.MappingOwner
 
-class TridentToggleQuickMenuAction : AnAction() {
+class ToggleQuickMenuAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         if (!remapped) remap()
         if (e.project != null) {
@@ -15,7 +15,7 @@ class TridentToggleQuickMenuAction : AnAction() {
     }
 
     private fun remap() {
-        if (!AppSettingsState.instance.enterToSelect) return
+        if (!SettingsState.instance.enterToSelect) return
         val keys = injector.parser.parseKeys(":action TridentQuickMenuSelect<cr>")
         val keyGroup = injector.keyGroup
         keyGroup.putKeyMapping(MappingMode.NVO,

@@ -37,10 +37,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable
                 parentId="tools"
-                instance="me.kyren223.trident.AppSettingsConfigurable"
-                id="me.kyren223.trident.AppSettingsConfigurable"
+                instance="me.kyren223.trident.SettingsConfigurable"
+                id="me.kyren223.trident.SettingsConfigurable"
                 displayName="Trident Settings"/>
-        <applicationService serviceImplementation="me.kyren223.trident.AppSettingsState"/>
+        <applicationService serviceImplementation="me.kyren223.trident.SettingsState"/>
     </extensions>
 
     <actions>
@@ -51,55 +51,61 @@
 
         <!-- Trident Select Buffer -->
         <action id="TridentSelect1"
-                class="me.kyren223.trident.TridentSelectAction"
+                class="me.kyren223.trident.SelectAction"
                 text="Select Buffer 1">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
         <action id="TridentSelect2"
-                class="me.kyren223.trident.TridentSelectAction"
+                class="me.kyren223.trident.SelectAction"
                 text="Select Buffer 2">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
         <action id="TridentSelect3"
-                class="me.kyren223.trident.TridentSelectAction"
+                class="me.kyren223.trident.SelectAction"
                 text="Select Buffer 3">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
         <action id="TridentSelect4"
-                class="me.kyren223.trident.TridentSelectAction"
+                class="me.kyren223.trident.SelectAction"
                 text="Select Buffer 4">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <!-- Select Previous & Next Buffer -->
         <action id="TridentSelectPrev"
-                class="me.kyren223.trident.TridentSelectAction"
+                class="me.kyren223.trident.SelectAction"
                 text="Select Previous Buffer">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
         <action id="TridentSelectNext"
-                class="me.kyren223.trident.TridentSelectAction"
+                class="me.kyren223.trident.SelectAction"
                 text="Select Next Buffer">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <!-- Append -->
         <action id="TridentAppend"
-                class="me.kyren223.trident.TridentAppendAction"
+                class="me.kyren223.trident.AppendAction"
                 text="Append File">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <!-- UI Actions -->
         <action id="TridentToggleQuickMenu"
-                class="me.kyren223.trident.TridentToggleQuickMenuAction"
+                class="me.kyren223.trident.ToggleQuickMenuAction"
                 text="Toggle Quick Menu">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 
         <action id="TridentQuickMenuSelect"
-                class="me.kyren223.trident.TridentQuickMenuSelectAction"
+                class="me.kyren223.trident.QuickMenuSelectAction"
                 text="Quick Menu Select">
+            <add-to-group group-id="me.kyren223.trident.mainGroup"/>
+        </action>
+
+        <action id="TridentPathMappingsMenu"
+                class="me.kyren223.trident.PathMappingsMenuAction"
+                text="Toggle Path Mappings Menu">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
 

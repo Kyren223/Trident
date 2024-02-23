@@ -5,5 +5,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Trident (Harpoon)"
+rootProject.name = "Trident"
 include("IdeaVIM")

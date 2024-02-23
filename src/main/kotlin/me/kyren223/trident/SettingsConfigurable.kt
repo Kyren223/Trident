@@ -5,7 +5,7 @@ import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.util.NlsContexts.ConfigurableName
 import javax.swing.JComponent
 
-class AppSettingsConfigurable : Configurable {
+class SettingsConfigurable : Configurable {
     private var settings: SettingsData? = null
     override fun getDisplayName(): @ConfigurableName String {
         return "Trident Settings"
@@ -17,7 +17,7 @@ class AppSettingsConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        val settings = AppSettingsState.instance
+        val settings = SettingsState.instance
         if (settings.width != this.settings!!.getWidth()) return true
         if (settings.height != this.settings!!.getHeight()) return true
         if (settings.fontSize != this.settings!!.getFontSize()) return true
@@ -26,7 +26,7 @@ class AppSettingsConfigurable : Configurable {
     }
 
     override fun apply() {
-        val settings = AppSettingsState.instance
+        val settings = SettingsState.instance
         settings.width = this.settings!!.getWidth()
         settings.height = this.settings!!.getHeight()
         settings.fontSize = this.settings!!.getFontSize()
@@ -34,7 +34,7 @@ class AppSettingsConfigurable : Configurable {
     }
 
     override fun reset() {
-        val settings = AppSettingsState.instance
+        val settings = SettingsState.instance
         if (this.settings == null) {
             this.settings = SettingsData()
         }

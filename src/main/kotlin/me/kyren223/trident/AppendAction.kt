@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
-class TridentAppendAction : AnAction() {
+class AppendAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project: Project = e.project ?: return
         val file: VirtualFile = e.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return

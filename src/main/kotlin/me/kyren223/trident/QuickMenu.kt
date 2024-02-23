@@ -14,18 +14,18 @@ import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
 import javax.swing.JComponent
 
-class TridentQuickMenu(private val content: String) : DialogWrapper(true) {
+class QuickMenu(private val content: String) : DialogWrapper(true) {
     private lateinit var editorTextField: EditorTextField
 
     init {
-        val settings = AppSettingsState.instance
+        val settings = SettingsState.instance
         this.title = "Trident Quick Menu"
         setSize(settings.width, settings.height)
         super.init()
     }
 
     override fun createCenterPanel(): JComponent {
-        val settings = AppSettingsState.instance
+        val settings = SettingsState.instance
         editorTextField = EditorTextField(this.content)
         editorTextField.setOneLineMode(false)
         editorTextField.addSettingsProvider {
@@ -48,9 +48,6 @@ class TridentQuickMenu(private val content: String) : DialogWrapper(true) {
         return editorTextField
     }
 
-    private fun simulateKeyPress(key: String, editor: VimEditor, context: ExecutionContext.Editor) {
-        KeyHandler.getInstance().handleKey(editor, injector.parser.parseKeys(key)[0], context)
-    }
 
     override fun getPreferredFocusedComponent(): JComponent {
         return this.editorTextField
