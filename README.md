@@ -34,7 +34,7 @@ The plugin is inspired by the [Harpoon](https://github.com/ThePrimeagen/harpoon)
 
 ## Installation
 * Version 2023.1 or later of any IntelliJ-based IDE is required.
-* Install the plugin from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/23771-trident).
+* Install the plugin from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/23818-trident).
 
 ## Getting Started
 * All actions can be mapped to IDE keymaps like usual, the examples below are for IdeaVim only.
