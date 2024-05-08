@@ -1,32 +1,33 @@
-package me.kyren223.trident
+package me.kyren223.trident.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditorManager
+import me.kyren223.trident.utils.TridentList
 
 class SelectAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
         var index = when (val actionId = e.actionManager.getId(this)) {
             NEXT -> {
-                val current = TridentState.getIndexOfFile(project, e.getData(PlatformDataKeys.VIRTUAL_FILE))
-                if (current == -1) return
+                val file = e.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
+                val current = TridentList.getIndexOfFile(project, file) ?: return
                 current + 1
             }
+
             PREV -> {
-                val current = TridentState.getIndexOfFile(project, e.getData(PlatformDataKeys.VIRTUAL_FILE))
-                if (current == -1) return
+                val file = e.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
+                val current = TridentList.getIndexOfFile(project, file) ?: return
                 current - 1
             }
+
             else -> {
-                getIndex(actionId)
+                getIndex(actionId!!)
             }
         }
 
-        val count = TridentState.getFileCount(project)
-        index = ((index % count) + count) % count
-        val file = TridentState.selectFile(project, index) ?: return
+        val file = TridentList.select(project, index) ?: return
         FileEditorManager.getInstance(project).openFile(file, true)
     }
 
