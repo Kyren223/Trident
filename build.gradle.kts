@@ -31,7 +31,8 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("231")
+        // Supports versions from 2023.2 and up
+        sinceBuild.set("232")
     }
 
     signPlugin {
