@@ -3,14 +3,14 @@
 # Trident
 ##### Effortless file traversal to minimize keystrokes and maximize productivity
 
-[![GitHub release](https://img.shields.io/github/v/release/Kyren223/Trident?style=for-the-badge)](https://github.com/Kyren223/Trident/releases/tag/1.0)
+[![GitHub release](https://img.shields.io/github/v/release/Kyren223/Trident?style=for-the-badge)](https://github.com/Kyren223/Trident/releases/tag/2.0.0)
 </div>
 
 ## Table of Contents
 * [Features](#features)
 * [Installation](#installation)
 * [Getting Started](#getting-started)
-* [Settings](#settings)
+* [Configuration](#configuration)
 * [Contribution](#contribution)
 * [License](#license)
 * [Contact](#contact)
@@ -34,24 +34,29 @@ The plugin is inspired by the [Harpoon](https://github.com/ThePrimeagen/harpoon)
 
 ## Installation
 * Version 2023.1 or later of any IntelliJ-based IDE is required.
+* Install the plugin through the IDE's plugin manager by searching for "Trident".
 * Install the plugin from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/23818-trident).
+* Install the plugin from the [GitHub Releases](https://github.com/Kyren223/Trident/releases).
 
 ## Getting Started
-* All actions can be mapped to IDE keymaps like usual, the examples below are for IdeaVim only.
-* Make sure to download IdeaVim if you want to configure the keymaps via .ideavimrc
+* The default settings are sensible, but you can customize them if you wish.
+
+* Actions can be mapped to IDE keymaps, search for "Trident" in the IDE's keymap settings.
+* If you are using IdeaVim, you can configure the keymaps through .ideavimrc
 
 ### Example .ideavimrc Configuration
 ```vimrc
 " Append the current file to the list
-map <leader>a :action TridentAppend<CR>
+map <leader>a :action TridentAppend<cr>
 
-" Open the quick menu
-map <C-h> :action TridentToggleQuickMenu<CR>
+" Open the Trident list
+map <C-h> :action TridentList<cr>
 
-" Select the given file (from the Quick Menu) and open it
-map <leader>o :action TridentQuickMenuSelect<CR>
+" Select the given file (from the Trident list) and open it
+map <leader>o :action TridentListSelect<cr>
 
-" Hotkeys to open the first 4 items in the list
+" You can assign up to 10 hotkeys using TridentSelect[1-10] 
+" This is an example for the first 4 items in the list
 map <C-h> :action TridentSelect1<CR>
 map <C-t> :action TridentSelect2<CR>
 map <C-n> :action TridentSelect3<CR>
@@ -62,49 +67,89 @@ map <C-S-P> :action TridentSelectPrev<CR>
 map <C-S-N> :action TridentSelectNext<CR>
 ```
 
-### My .ideavimrc Configuration
-```vimrc
-map <leader>a :action TridentAppend<CR>
-map <C-e> :action TridentToggleQuickMenu<CR>
-" I am Using "Enter" from settings so no need to map it here
+## Configuration
 
+### Settings
+* Search for "Trident Settings" in the IDE's settings
+* You can customize the width, height, font size of the Trident list
+* You can also customize other settings, each setting has an explanation under it
+
+* All actions can be mapped to IDE keymaps
+* Keymaps can also be configured through .ideavimrc (requires IdeaVim)
+
+### Full .ideavimrc Configuration with all keymaps
+* The comments explain the keymaps and their functionality
+```vimrc
+" Append the current file to the list
+map <leader>a :action TridentAppend<cr>
+
+" Open the Trident list
+map <C-h> :action TridentList<cr>
+
+" Select the given file (from the Trident list) and open it
+map <leader>o :action TridentListSelect<cr>
+
+" You can assign up to 10 hotkeys using TridentSelect[1-10] 
+" These hotkeys are used to quickly navigate to the corresponding Trident list item
 map <C-1> :action TridentSelect1<CR>
 map <C-2> :action TridentSelect2<CR>
 map <C-3> :action TridentSelect3<CR>
 map <C-4> :action TridentSelect4<CR>
+map <C-5> :action TridentSelect5<CR>
+map <C-6> :action TridentSelect6<CR>
+map <C-7> :action TridentSelect7<CR>
+map <C-8> :action TridentSelect8<CR>
+map <C-9> :action TridentSelect9<CR>
+map <C-0> :action TridentSelect10<CR>
+
+" Toggle previous & next buffers stored within the list
+map <C-S-P> :action TridentSelectPrev<CR>
+map <C-S-N> :action TridentSelectNext<CR>
 ```
 
-### Settings
-
-**Descriptions**
-* Width - Describes how wide the Quick Menu should be.
-* Height - Describes how tall the Quick Menu
-* Font Size - Describes the font size of the Quick Menu
-* Enter to select - When checked the Quick Menu will open the file when you press enter, otherwise it will look for your .ideavimrc file for the keybinding.
-
-**Defaults**
+### My settings values
 * Width - 800
 * Height - 400
-* Font Size - 20
-* Enter to select - true
+* Font Size - 30
+
+* Enter to select item - true
+* Automatic Mappings - true
+* Recursive Mappings - true
+* Remember last line - false
+* Index Cycling - true
+
+### My .ideavimrc Configuration
+```vimrc
+map <leader>a :action TridentAppend<cr>
+map <C-e> :action TridentToggleQuickMenu<cr>
+" I am Using "Enter to select" from settings 
+" so I don't need to map a TridentListSelect keymap here
+
+map <C-1> :action TridentSelect1<cr>
+map <C-2> :action TridentSelect2<cr>
+map <C-3> :action TridentSelect3<cr>
+map <C-4> :action TridentSelect4<cr>
+```
 
 ## Contribution
 
 This plugin is open-source and contributions are welcome.
 
-I recommend looking at the issues tab or the [TODO.md](TODO.md) file for ideas on what to work on.
+If you are looking for what to work on, see the [issues tab](https://github.com/Kyren223/Trident/issues)
+
+It's recommended to first open an issue before starting to work on a feature.
 
 ### Steps to contribute
 1. Fork the repository.
-2. Make your changes.
+2. Make your changes and commit them.
 3. Push your changes to your fork.
 4. Create a pull request.
-5. Wait for the pull request to be reviewed.
+5. Wait for the pull request to be reviewed and merged.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.
 
-The logo was design by me and is copyrighted.
+The logo was designed by me and is copyrighted.
 You may not use it without my permission.
 
 ## Contact

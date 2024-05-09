@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.kyren223"
-version = "1.2.0"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ intellij {
     version.set("2024.1")
     type.set("IC") // Target IDE Platform
     updateSinceUntilBuild.set(false)
-    plugins.set(listOf("IdeaVim:2.7.5"))
+    plugins.set(listOf("IdeaVim:2.11.0"))
 }
 
 tasks {

@@ -2,9 +2,10 @@ package me.kyren223.trident.utils
 
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
-import me.kyren223.trident.data.SettingsState
+import me.kyren223.trident.data.Settings
 
 object TridentList {
     private const val PROPERTIES_KEY = "TridentList"
@@ -16,12 +17,41 @@ object TridentList {
         return expandedPath.isNotBlank() && LocalFileSystem.getInstance().findFileByPath(expandedPath) != null
     }
 
+    private fun getShortPath(path: String): String? {
+        // For path `/path/to/file.ext` the result should be `$file`
+        // Unless for dot files, in which case it should be `$ext`
+        // Examples:
+        // - `/path/to/TridentUtils.kt` -> `$TridentUtils`
+        // - `/path/to/someBinary` -> `$someBinary`
+        // - `/path/to/.ideavimrc` -> `$ideavimrc`
+        return path.split("/")
+            .lastOrNull()
+            ?.let {
+                it.split(".")
+                    .let { parts ->
+                        when (parts.size) {
+                            0 -> it
+                            1, 2 -> parts.firstOrNull()
+                            else -> return null
+                        }
+                    }
+            }
+            ?.let { "\$${it}" }
+    }
+
     fun append(project: Project, file: VirtualFile) {
-        // TODO add a setting to automatically add an expansion to mappings if it doesn't exist
-        // Should be `$<file>` for `<path>/<file>.<extension>`
-        // Unless if the file starts with a dot, in which case it should be `$<extension>`
         val files = get(project).toMutableList()
-        files.add(file.path)
+
+        val automaticMapping = Settings.state.automaticMapping
+        val path = if (automaticMapping) {
+            val shortPath = getShortPath(file.path) ?: file.path
+            if (TridentMappings.exists(project, shortPath)) file.path else {
+                TridentMappings.append(project, shortPath, file.path)
+                shortPath
+            }
+        } else file.path
+
+        files.add(path)
         set(project, files)
     }
 
@@ -37,7 +67,9 @@ object TridentList {
     }
 
     private fun getFiles(project: Project): List<VirtualFile> {
-        return get(project).mapNotNull { LocalFileSystem.getInstance().findFileByPath(it) }
+        return get(project)
+            .map { TridentMappings.expand(project, it) }
+            .mapNotNull { LocalFileSystem.getInstance().findFileByPath(it) }
     }
 
     fun getIndexOfFile(project: Project, file: VirtualFile): Int? {
@@ -46,9 +78,9 @@ object TridentList {
     }
 
     fun select(project: Project, index: Int): VirtualFile? {
-        // TODO make this a setting if it should "cycle" or not
+        val cycle = Settings.state.indexCycling
         val count = getFiles(project).size
-        val i = ((index % count) + count) % count
+        val i = if (cycle) ((index % count) + count) % count else index
         val files = getFiles(project)
         return files.getOrNull(i)
     }
@@ -58,14 +90,13 @@ object TridentMappings {
     private const val PROPERTIES_KEY = "TridentMappings"
 
     private fun isValidEntry(key: String, value: String): Boolean {
-        // TODO change requirements, key should be alphanumeric and must only have 1 $ as the first character
         // Requirements:
         // - Key and value must not be blank
-        // - key must only contain alphanumeric characters and $
+        // - key must only contain alphanumeric characters and start with $
         // - value must not contain =
         return key.isNotBlank() && value.isNotBlank() &&
-                key.matches(Regex("^[a-zA-Z0-9\$]+$")) &&
-                value.matches(Regex("^[^=]+$"))
+                key.matches(Regex("""^\$[a-zA-Z0-9]+$""")) &&
+                value.matches(Regex("""^[^=]+$"""))
     }
 
     fun append(project: Project, key: String, value: String, overwrite: Boolean = false) {
@@ -89,18 +120,37 @@ object TridentMappings {
     fun get(project: Project): Map<String, String> {
         val properties = PropertiesComponent.getInstance(project)
         val list = properties.getList(PROPERTIES_KEY) ?: return emptyMap()
-        return list.map { it.split("=") }.associate { it[0] to it[1] }
+        val map = list
+            .map { it.split("=") }
+            .associate { it[0] to it[1] }
+            .toMutableMap()
+        project.guessProjectDir()?.let {
+            map["..."] = it.path
+            map["\$project"] = it.path
+        }
+        return map
     }
 
     fun expand(project: Project, path: String): String {
-        val recursive = SettingsState.instance.recursiveMapping
+        val recursive = Settings.state.recursiveMapping
         val mappings = get(project).toList().sortedByDescending { it.first.length }
-        var expanded = path
-
-        mappings.forEach { (key, value) ->
-            expanded = expanded.replace(key, if (recursive) expand(project, value) else value)
+        var expandedPath = path
+        while (true) {
+            var expanded = false
+            mappings.forEach { (key, value) ->
+                val expansion = expandedPath.replace(key, value)
+                if (expansion != expandedPath) {
+                    expandedPath = expansion
+                    expanded = true
+                }
+            }
+            if (!recursive || !expanded) break
         }
 
-        return expanded
+        return expandedPath
+    }
+
+    fun exists(project: Project, key: String): Boolean {
+        return get(project).containsKey(key)
     }
 }

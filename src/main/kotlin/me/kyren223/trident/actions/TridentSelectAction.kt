@@ -6,10 +6,10 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.fileEditor.FileEditorManager
 import me.kyren223.trident.utils.TridentList
 
-class SelectAction : AnAction() {
+class TridentSelectAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        var index = when (val actionId = e.actionManager.getId(this)) {
+        val index = when (val actionId = e.actionManager.getId(this)) {
             NEXT -> {
                 val file = e.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
                 val current = TridentList.getIndexOfFile(project, file) ?: return

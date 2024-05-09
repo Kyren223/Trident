@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.EditorTextField
 import com.maddyhome.idea.vim.newapi.vim
 import com.maddyhome.idea.vim.state.mode.Mode
-import me.kyren223.trident.data.SettingsState
+import me.kyren223.trident.data.Settings
 import me.kyren223.trident.utils.TridentMappings
 import me.kyren223.trident.utils.setEditorMode
 import java.awt.event.FocusEvent
@@ -18,7 +18,7 @@ class TridentMappingsMenu(private val content: String) : DialogWrapper(true) {
     private lateinit var editor: EditorTextField
 
     init {
-        val settings = SettingsState.instance
+        val settings = Settings.state
         this.title = "Trident Mappings"
         setSize(settings.width, settings.height)
         super.init()
@@ -28,7 +28,7 @@ class TridentMappingsMenu(private val content: String) : DialogWrapper(true) {
         editor = EditorTextField(this.content)
         editor.setOneLineMode(false)
         editor.addSettingsProvider {
-            it.setFontSize(SettingsState.instance.fontSize)
+            it.setFontSize(Settings.state.fontSize)
             it.isInsertMode = false
             it.caretModel.moveToLogicalPosition(LogicalPosition(0, 0))
             it.settings.isLineNumbersShown = true
@@ -62,11 +62,10 @@ class TridentMappingsMenu(private val content: String) : DialogWrapper(true) {
     }
 
     private fun save() {
-        val map = editor.text.split("\n")
+        map = editor.text.split("\n")
             .map { entry -> entry.split("=") }
             .filter { entry -> entry.size == 2 }
             .associate { it[0] to it[1] }
-        TridentMappings.set(editor.project, map)
     }
 
     override fun createSouthPanel(): JComponent? {
@@ -74,11 +73,14 @@ class TridentMappingsMenu(private val content: String) : DialogWrapper(true) {
     }
 
     companion object {
+        var map: Map<String, String>? = null
         fun open(project: Project) {
             val content = TridentMappings.get(project).entries
                 .joinToString("\n") { "${it.key}=${it.value}" }
             val menu = TridentMappingsMenu(content)
             menu.show()
+            map?.let { TridentMappings.set(project, it) }
+            map = null
         }
     }
 }

@@ -16,14 +16,15 @@ class SettingsData {
 
     val panel: JPanel
 
-    private val width = JBIntSpinner(SettingsState.instance.width, minValue, maxValue, step)
-    private val height = JBIntSpinner(SettingsState.instance.height, minValue, maxValue, step)
-    private val fontSize = JBIntSpinner(SettingsState.instance.fontSize, minValue, maxValue, step)
+    private val width = JBIntSpinner(Settings.state.width, minValue, maxValue, step)
+    private val height = JBIntSpinner(Settings.state.height, minValue, maxValue, step)
+    private val fontSize = JBIntSpinner(Settings.state.fontSize, minValue, maxValue, step)
 
-    private val enterToSelect = JBCheckBox(null, SettingsState.instance.enterToSelect)
-    private val rememberLine = JBCheckBox(null, SettingsState.instance.rememberLine)
-    private val automaticMapping = JBCheckBox(null, SettingsState.instance.automaticMapping)
-    private val recursiveMapping = JBCheckBox(null, SettingsState.instance.recursiveMapping)
+    private val enterToSelect = JBCheckBox(null, Settings.state.enterToSelect)
+    private val rememberLine = JBCheckBox(null, Settings.state.rememberLine)
+    private val automaticMapping = JBCheckBox(null, Settings.state.automaticMapping)
+    private val recursiveMapping = JBCheckBox(null, Settings.state.recursiveMapping)
+    private val indexCycling = JBCheckBox(null, Settings.state.indexCycling)
 
     init {
         panel = FormBuilder.createFormBuilder()
@@ -55,6 +56,10 @@ class SettingsData {
             .addComponent(desc("If enabled, the current line of the TridentList will be remembered " +
                     "and will be selected when the TridentList is opened."))
             .addComponent(desc("Note, this does not persist across restarts, it's run-time only."))
+
+            .addLabeledComponent("Index cycling", indexCycling)
+            .addComponent(desc("If enabled, indexes will be cyclic, " +
+                    "For example if you have 3 files and hotkey to 4, it'll cycle to 1."))
 
             .addComponentFillVertically(JPanel(), 0)
             .panel
@@ -120,5 +125,13 @@ class SettingsData {
 
     fun setRecursiveMapping(recursiveMapping: Boolean) {
         this.recursiveMapping.isSelected = recursiveMapping
+    }
+
+    fun getIndexCycling(): Boolean {
+        return indexCycling.isSelected
+    }
+
+    fun setIndexCycling(indexCycling: Boolean) {
+        this.indexCycling.isSelected = indexCycling
     }
 }

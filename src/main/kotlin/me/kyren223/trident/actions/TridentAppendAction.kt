@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import me.kyren223.trident.utils.TridentList
 
-class AppendAction : AnAction() {
+class TridentAppendAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project: Project = e.project ?: return
         val file: VirtualFile = e.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return

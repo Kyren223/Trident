@@ -1,5 +1,3 @@
-@file:Suppress("SameParameterValue")
-
 package me.kyren223.trident.ui
 
 import com.intellij.openapi.editor.EditorSettings
@@ -10,8 +8,9 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.EditorTextField
 import com.maddyhome.idea.vim.newapi.vim
 import com.maddyhome.idea.vim.state.mode.Mode
-import me.kyren223.trident.data.SettingsState
+import me.kyren223.trident.data.Settings
 import me.kyren223.trident.utils.TridentList
+import me.kyren223.trident.utils.injectEnterToSelectMapping
 import me.kyren223.trident.utils.setEditorMode
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
@@ -23,7 +22,7 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
 
     init {
         this.title = "Trident List"
-        val settings = SettingsState.instance
+        val settings = Settings.state
         setSize(settings.width, settings.height)
         super.init()
     }
@@ -32,9 +31,9 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
         editor = EditorTextField(this.content)
         editor.setOneLineMode(false)
         editor.addSettingsProvider {
-            it.setFontSize(SettingsState.instance.fontSize)
+            it.setFontSize(Settings.state.fontSize)
             it.isInsertMode = false
-            val lineNumber = if (SettingsState.instance.rememberLine) line else 0
+            val lineNumber = if (Settings.state.rememberLine) line else 0
             it.caretModel.moveToLogicalPosition(LogicalPosition(lineNumber, 0))
             it.settings.isLineNumbersShown = true
             it.settings.lineNumerationType = EditorSettings.LineNumerationType.ABSOLUTE
@@ -46,7 +45,8 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
                 setEditorMode(editor, Mode.NORMAL())
             }
 
-            override fun focusLost(e: FocusEvent?) { /* Do nothing */ }
+            override fun focusLost(e: FocusEvent?) { /* Do nothing */
+            }
         })
 
         return editor
@@ -58,10 +58,7 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
     }
 
     fun select() {
-        val project = editor.project
         doOKAction()
-        val file = TridentList.select(project, line) ?: return
-        FileEditorManager.getInstance(project).openFile(file, true)
     }
 
     override fun doOKAction() {
@@ -75,8 +72,9 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
     }
 
     private fun save() {
-        TridentList.set(editor.project, editor.text.split("\n"))
-        line = editor.editor!!.caretModel.logicalPosition.line
+        instance = null
+        files = editor.text.split("\n")
+        line = editor.editor?.caretModel?.logicalPosition?.line ?: 0
     }
 
     override fun createSouthPanel(): JComponent? {
@@ -84,11 +82,21 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
     }
 
     companion object {
+        var instance: TridentListMenu? = null
+        var files: List<String>? = null
         var line = 0
         fun open(project: Project) {
             val content = TridentList.get(project).joinToString("\n")
-            val menu = TridentListMenu(content)
-            menu.show()
+            instance = TridentListMenu(content)
+            injectEnterToSelectMapping()
+            val selected = instance!!.showAndGet()
+
+            files?.let { TridentList.set(project, it) }
+            files = null
+
+            if (!selected) return
+            val file = TridentList.select(project, line) ?: return
+            FileEditorManager.getInstance(project).openFile(file, true)
         }
     }
 }

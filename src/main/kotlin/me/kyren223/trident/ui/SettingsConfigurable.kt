@@ -4,7 +4,7 @@ package me.kyren223.trident.ui
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.util.NlsContexts.ConfigurableName
 import me.kyren223.trident.data.SettingsData
-import me.kyren223.trident.data.SettingsState
+import me.kyren223.trident.data.Settings
 import javax.swing.JComponent
 
 class SettingsConfigurable : Configurable {
@@ -21,7 +21,7 @@ class SettingsConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        val settings = SettingsState.instance
+        val settings = Settings.state
         if (settings.width != this.settings!!.getWidth()) return true
         if (settings.height != this.settings!!.getHeight()) return true
         if (settings.fontSize != this.settings!!.getFontSize()) return true
@@ -29,11 +29,12 @@ class SettingsConfigurable : Configurable {
         if (settings.automaticMapping != this.settings!!.getAutomaticMapping()) return true
         if (settings.recursiveMapping != this.settings!!.getRecursiveMapping()) return true
         if (settings.rememberLine != this.settings!!.getRememberLine()) return true
+        if (settings.indexCycling != this.settings!!.getIndexCycling()) return true
         return false
     }
 
     override fun apply() {
-        val settings = SettingsState.instance
+        val settings = Settings.state
         settings.width = this.settings!!.getWidth()
         settings.height = this.settings!!.getHeight()
         settings.fontSize = this.settings!!.getFontSize()
@@ -41,10 +42,11 @@ class SettingsConfigurable : Configurable {
         settings.automaticMapping = this.settings!!.getAutomaticMapping()
         settings.recursiveMapping = this.settings!!.getRecursiveMapping()
         settings.rememberLine = this.settings!!.getRememberLine()
+        settings.indexCycling = this.settings!!.getIndexCycling()
     }
 
     override fun reset() {
-        val settings = SettingsState.instance
+        val settings = Settings.state
         if (this.settings == null) {
             this.settings = SettingsData()
         }
@@ -55,6 +57,7 @@ class SettingsConfigurable : Configurable {
         this.settings!!.setAutomaticMapping(settings.automaticMapping)
         this.settings!!.setRecursiveMapping(settings.recursiveMapping)
         this.settings!!.setRememberLine(settings.rememberLine)
+        this.settings!!.setIndexCycling(settings.indexCycling)
     }
 
     override fun disposeUIResources() {
