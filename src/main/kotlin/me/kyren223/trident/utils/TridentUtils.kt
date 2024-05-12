@@ -11,14 +11,14 @@ import me.kyren223.trident.data.Settings
 
 object TridentList {
     private const val PROPERTIES_KEY = "TridentList"
-
+    
     private fun isValidFile(project: Project, path: String): Boolean {
         // Requirements:
         // - File must exist on disk after expansion
         val expandedPath = TridentMappings.expand(project, path)
         return expandedPath.isNotBlank() && LocalFileSystem.getInstance().findFileByPath(expandedPath) != null
     }
-
+    
     private fun getModifiedPath(project: Project, path: String): String {
         val automaticMapping = Settings.state.automaticMapping
         val automaticReplacing = Settings.state.automaticReplacing
@@ -49,9 +49,12 @@ object TridentList {
                 return@let (filename ?: extension)!!
             }?.let {
                 val key = "\$$it"
+                if (TridentMappings.exists(project, key)) {
+                    return@let null
+                }
                 TridentMappings.append(project, key, path)
                 return@let key
-            } ?: path
+            } ?: (if (automaticReplacing == AutomaticReplacing.Smart) smartReplacement(path, mappings) else path)
     }
     
     private fun smartReplacement(path: String, mappings: Map<String, String>): String {
@@ -86,29 +89,29 @@ object TridentList {
             .map { "${it.key}=${it.value}" }
             .joinToString(", "))
     }
-
+    
     fun set(project: Project, files: List<String>) {
         val properties = PropertiesComponent.getInstance(project)
         val list = files.filter { isValidFile(project, it) }
         properties.setList(PROPERTIES_KEY, list)
     }
-
+    
     fun get(project: Project): List<String> {
         val properties = PropertiesComponent.getInstance(project)
         return properties.getList(PROPERTIES_KEY) ?: emptyList()
     }
-
+    
     private fun getFiles(project: Project): List<VirtualFile> {
         return get(project)
             .map { TridentMappings.expand(project, it) }
             .mapNotNull { LocalFileSystem.getInstance().findFileByPath(it) }
     }
-
+    
     fun getIndexOfFile(project: Project, file: VirtualFile): Int? {
         val files = getFiles(project)
         return files.indexOfFirst { it.path == file.path }.takeUnless { it == -1 }
     }
-
+    
     fun select(project: Project, index: Int): VirtualFile? {
         val cycle = Settings.state.indexCycling
         val count = getFiles(project).size
@@ -120,7 +123,7 @@ object TridentList {
 
 object TridentMappings {
     private const val PROPERTIES_KEY = "TridentMappings"
-
+    
     private fun isValidEntry(key: String, value: String): Boolean {
         // Requirements:
         // - Key and value must not be blank
@@ -131,7 +134,7 @@ object TridentMappings {
                 key.matches(Regex("""^\$[a-zA-Z0-9_.\-]+$""")) &&
                 value.matches(Regex("""^[^=]+$"""))
     }
-
+    
     fun append(project: Project, key: String, value: String, overwrite: Boolean = false) {
         println("TridentMappings.append - key: $key, value: $value")
         val map = get(project).toMutableMap()
@@ -142,18 +145,18 @@ object TridentMappings {
         set(project, map)
         println("TridentMappings.append - set: ${get(project).map { "${it.key}=${it.value}" }.joinToString(", ")}")
     }
-
+    
     fun set(project: Project, mappings: Map<String, String>) {
         val properties = PropertiesComponent.getInstance(project)
-
+        
         val list = mappings
             .filter { isValidEntry(it.key, it.value) }
             .map { "${it.key}=${it.value}" }
             .toMutableList()
-
+        
         properties.setList(PROPERTIES_KEY, list)
     }
-
+    
     fun get(project: Project): Map<String, String> {
         val properties = PropertiesComponent.getInstance(project)
         val list = properties.getList(PROPERTIES_KEY) ?: return emptyMap()
@@ -167,7 +170,7 @@ object TridentMappings {
         }
         return map
     }
-
+    
     fun expand(project: Project, path: String): String {
         val recursive = Settings.state.recursiveMapping
         val mappings = get(project).toList().sortedByDescending { it.first.length }
@@ -183,7 +186,11 @@ object TridentMappings {
             }
             if (!recursive || !expanded) break
         }
-
+        
         return expandedPath
+    }
+    
+    fun exists(project: Project, key: String): Boolean {
+        return get(project).containsKey(key)
     }
 }
