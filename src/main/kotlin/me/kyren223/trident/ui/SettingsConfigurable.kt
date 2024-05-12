@@ -27,6 +27,7 @@ class SettingsConfigurable : Configurable {
         if (settings.fontSize != this.settings!!.getFontSize()) return true
         if (settings.enterToSelect != this.settings!!.getEnterToSelect()) return true
         if (settings.automaticMapping != this.settings!!.getAutomaticMapping()) return true
+        if (settings.automaticReplacing != this.settings!!.getAutomaticReplacing()) return true
         if (settings.recursiveMapping != this.settings!!.getRecursiveMapping()) return true
         if (settings.rememberLine != this.settings!!.getRememberLine()) return true
         if (settings.indexCycling != this.settings!!.getIndexCycling()) return true
@@ -40,6 +41,7 @@ class SettingsConfigurable : Configurable {
         settings.fontSize = this.settings!!.getFontSize()
         settings.enterToSelect = this.settings!!.getEnterToSelect()
         settings.automaticMapping = this.settings!!.getAutomaticMapping()
+        settings.automaticReplacing = this.settings!!.getAutomaticReplacing()
         settings.recursiveMapping = this.settings!!.getRecursiveMapping()
         settings.rememberLine = this.settings!!.getRememberLine()
         settings.indexCycling = this.settings!!.getIndexCycling()
@@ -47,14 +49,13 @@ class SettingsConfigurable : Configurable {
 
     override fun reset() {
         val settings = Settings.state
-        if (this.settings == null) {
-            this.settings = SettingsData()
-        }
+        if (this.settings == null) this.settings = SettingsData()
         this.settings!!.setWidth(settings.width)
         this.settings!!.setHeight(settings.height)
         this.settings!!.setFontSize(settings.fontSize)
         this.settings!!.setEnterToSelect(settings.enterToSelect)
         this.settings!!.setAutomaticMapping(settings.automaticMapping)
+        this.settings!!.setAutomaticReplacing(settings.automaticReplacing)
         this.settings!!.setRecursiveMapping(settings.recursiveMapping)
         this.settings!!.setRememberLine(settings.rememberLine)
         this.settings!!.setIndexCycling(settings.indexCycling)

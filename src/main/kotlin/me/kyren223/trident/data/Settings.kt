@@ -8,7 +8,7 @@ import com.intellij.openapi.components.*
 @State(name = "me.kyren223.trident.data.SettingsState", storages = [Storage("SdkSettingsPlugin.xml")])
 class Settings : SimplePersistentStateComponent<SettingsState>(SettingsState()) {
     companion object {
-        val instance: Settings
+        private val instance: Settings
             get() = ApplicationManager.getApplication().getService(Settings::class.java)
         val state: SettingsState
             get() = instance.state
@@ -20,7 +20,8 @@ class SettingsState : BaseState() {
     var height = 400
     var fontSize = 20
     var enterToSelect = true
-    var automaticMapping = false
+    var automaticMapping = AutomaticMapping.Disabled
+    var automaticReplacing = AutomaticReplacing.Smart
     var recursiveMapping = false
     var rememberLine = false
     var indexCycling = false

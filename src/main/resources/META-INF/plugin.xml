@@ -36,7 +36,7 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable
-                parentId="toolsDTree"
+                parentId="tools"
                 instance="me.kyren223.trident.ui.SettingsConfigurable"
                 id="me.kyren223.trident.ui.SettingsConfigurable"
                 displayName="Trident Settings"/>
@@ -128,6 +128,6 @@
                 text="Toggle Path Mappings Menu">
             <add-to-group group-id="me.kyren223.trident.mainGroup"/>
         </action>
-
     </actions>
+
 </idea-plugin>

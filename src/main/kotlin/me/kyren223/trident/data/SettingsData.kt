@@ -1,5 +1,6 @@
 package me.kyren223.trident.data
 
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.JBColor
 import com.intellij.ui.JBIntSpinner
 import com.intellij.ui.components.JBCheckBox
@@ -9,7 +10,7 @@ import com.intellij.util.ui.JBFont
 import javax.swing.JPanel
 
 class SettingsData {
-
+    
     private val minValue = 1
     private val maxValue = 5000
     private val step = 10
@@ -22,11 +23,15 @@ class SettingsData {
 
     private val enterToSelect = JBCheckBox(null, Settings.state.enterToSelect)
     private val rememberLine = JBCheckBox(null, Settings.state.rememberLine)
-    private val automaticMapping = JBCheckBox(null, Settings.state.automaticMapping)
+    private val automaticMapping = ComboBox(AutomaticMapping.entries.toTypedArray())
+    private val automaticReplacing = ComboBox(AutomaticReplacing.entries.toTypedArray())
     private val recursiveMapping = JBCheckBox(null, Settings.state.recursiveMapping)
     private val indexCycling = JBCheckBox(null, Settings.state.indexCycling)
 
     init {
+        automaticMapping.selectedItem = Settings.state.automaticMapping
+        automaticReplacing.selectedItem = Settings.state.automaticReplacing
+        
         panel = FormBuilder.createFormBuilder()
             .addComponent(JBLabel("Popup settings").withFont(JBFont.h4()))
             .addLabeledComponent("Popup width", width)
@@ -41,9 +46,16 @@ class SettingsData {
             .addVerticalGap(step)
 
             .addLabeledComponent("Automatic mapping (when possible)", automaticMapping)
-            .addComponent(desc("If enabled, when using the Append action, " +
-                    "the full file path will be added to the Trident Mappings."))
-            .addComponent(desc("Mapping Entry: $<file>=<path>/<file>.<extension>"))
+            .addComponent(desc("Disabled - adds the full file path to the Trident Mappings."))
+            .addComponent(desc("Filename - Adds the filename (with extension)."))
+            .addComponent(desc("Filename (no extension) - Adds the filename (without extension)."))
+            .addVerticalGap(step)
+            
+            .addLabeledComponent("Automatic replacing (when possible)", automaticReplacing)
+            .addComponent(desc("Disabled - Keeps the full file path."))
+            .addComponent(desc("Exact - Replaces the full path if an exact match is found."))
+            .addComponent(desc("Smart - Like exact but if no exact match found, " +
+                    "it will try to make the path shorter."))
             .addVerticalGap(step)
 
             .addLabeledComponent("Recursive mapping", recursiveMapping)
@@ -103,12 +115,20 @@ class SettingsData {
         this.enterToSelect.isSelected = enter
     }
 
-    fun getAutomaticMapping(): Boolean {
-        return automaticMapping.isSelected
+    fun getAutomaticMapping(): AutomaticMapping {
+        return automaticMapping.selectedItem as AutomaticMapping
     }
 
-    fun setAutomaticMapping(automaticMapping: Boolean) {
-        this.automaticMapping.isSelected = automaticMapping
+    fun setAutomaticMapping(automaticMapping: AutomaticMapping) {
+        this.automaticMapping.selectedItem = automaticMapping
+    }
+    
+    fun getAutomaticReplacing(): AutomaticReplacing {
+        return automaticReplacing.selectedItem as AutomaticReplacing
+    }
+    
+    fun setAutomaticReplacing(automaticReplacing: AutomaticReplacing) {
+        this.automaticReplacing.selectedItem = automaticReplacing
     }
 
     fun getRememberLine(): Boolean {
@@ -134,4 +154,22 @@ class SettingsData {
     fun setIndexCycling(indexCycling: Boolean) {
         this.indexCycling.isSelected = indexCycling
     }
+}
+
+enum class AutomaticMapping {
+    Disabled,
+    Filename,
+    FilenameNoExtension,
+    ;
+    
+    override fun toString(): String {
+        if (this == FilenameNoExtension) return "Filename (without extension)"
+        return super.toString()
+    }
+}
+
+enum class AutomaticReplacing {
+    Disabled,
+    Exact,
+    Smart,
 }

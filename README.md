@@ -141,7 +141,8 @@ map <C-S-N> :action TridentSelectNext<CR>
 * Font Size - 30
 
 * Enter to select item - true
-* Automatic Mappings - true
+* Automatic Mappings - Filename
+* Automatic Replacing - Smart
 * Recursive Mappings - true
 * Remember last line - false
 * Index Cycling - true
