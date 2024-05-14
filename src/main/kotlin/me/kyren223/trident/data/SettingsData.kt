@@ -17,20 +17,20 @@ class SettingsData {
 
     val panel: JPanel
 
-    private val width = JBIntSpinner(Settings.state.width, minValue, maxValue, step)
-    private val height = JBIntSpinner(Settings.state.height, minValue, maxValue, step)
-    private val fontSize = JBIntSpinner(Settings.state.fontSize, minValue, maxValue, step)
+    private val width = JBIntSpinner(SettingsState.instance.width, minValue, maxValue, step)
+    private val height = JBIntSpinner(SettingsState.instance.height, minValue, maxValue, step)
+    private val fontSize = JBIntSpinner(SettingsState.instance.fontSize, minValue, maxValue, step)
 
-    private val enterToSelect = JBCheckBox(null, Settings.state.enterToSelect)
-    private val rememberLine = JBCheckBox(null, Settings.state.rememberLine)
+    private val enterToSelect = JBCheckBox(null, SettingsState.instance.enterToSelect)
+    private val rememberLine = JBCheckBox(null, SettingsState.instance.rememberLine)
     private val automaticMapping = ComboBox(AutomaticMapping.entries.toTypedArray())
     private val automaticReplacing = ComboBox(AutomaticReplacing.entries.toTypedArray())
-    private val recursiveMapping = JBCheckBox(null, Settings.state.recursiveMapping)
-    private val indexCycling = JBCheckBox(null, Settings.state.indexCycling)
+    private val recursiveMapping = JBCheckBox(null, SettingsState.instance.recursiveMapping)
+    private val indexCycling = JBCheckBox(null, SettingsState.instance.indexCycling)
 
     init {
-        automaticMapping.selectedItem = Settings.state.automaticMapping
-        automaticReplacing.selectedItem = Settings.state.automaticReplacing
+        automaticMapping.selectedItem = SettingsState.instance.automaticMapping
+        automaticReplacing.selectedItem = SettingsState.instance.automaticReplacing
         
         panel = FormBuilder.createFormBuilder()
             .addComponent(JBLabel("Popup settings").withFont(JBFont.h4()))

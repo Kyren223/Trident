@@ -40,7 +40,7 @@
                 instance="me.kyren223.trident.ui.SettingsConfigurable"
                 id="me.kyren223.trident.ui.SettingsConfigurable"
                 displayName="Trident Settings"/>
-        <applicationService serviceImplementation="me.kyren223.trident.data.Settings"/>
+        <applicationService serviceImplementation="me.kyren223.trident.data.SettingsState"/>
     </extensions>
 
     <actions>

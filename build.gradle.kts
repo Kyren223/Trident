@@ -3,9 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.21"
     id("org.jetbrains.intellij") version "1.17.3"
 }
-
 group = "me.kyren223"
-version = "2.1.1"
+version = "2.1.2"
 
 repositories {
     mavenCentral()

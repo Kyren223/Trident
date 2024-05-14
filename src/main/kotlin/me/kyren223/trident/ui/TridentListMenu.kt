@@ -8,7 +8,7 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.EditorTextField
 import com.maddyhome.idea.vim.newapi.vim
 import com.maddyhome.idea.vim.state.mode.Mode
-import me.kyren223.trident.data.Settings
+import me.kyren223.trident.data.SettingsState
 import me.kyren223.trident.utils.TridentList
 import me.kyren223.trident.utils.injectEnterToSelectMapping
 import me.kyren223.trident.utils.setEditorMode
@@ -22,7 +22,7 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
 
     init {
         this.title = "Trident List"
-        val settings = Settings.state
+        val settings = SettingsState.instance
         setSize(settings.width, settings.height)
         super.init()
     }
@@ -31,9 +31,9 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
         editor = EditorTextField(this.content)
         editor.setOneLineMode(false)
         editor.addSettingsProvider {
-            it.setFontSize(Settings.state.fontSize)
+            it.setFontSize(SettingsState.instance.fontSize)
             it.isInsertMode = false
-            val lineNumber = if (Settings.state.rememberLine) line else 0
+            val lineNumber = if (SettingsState.instance.rememberLine) line else 0
             it.caretModel.moveToLogicalPosition(LogicalPosition(lineNumber, 0))
             it.settings.isLineNumbersShown = true
             it.settings.lineNumerationType = EditorSettings.LineNumerationType.ABSOLUTE

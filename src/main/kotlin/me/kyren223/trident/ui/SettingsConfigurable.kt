@@ -4,7 +4,7 @@ package me.kyren223.trident.ui
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.util.NlsContexts.ConfigurableName
 import me.kyren223.trident.data.SettingsData
-import me.kyren223.trident.data.Settings
+import me.kyren223.trident.data.SettingsState
 import javax.swing.JComponent
 
 class SettingsConfigurable : Configurable {
@@ -21,7 +21,7 @@ class SettingsConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        val settings = Settings.state
+        val settings = SettingsState.instance
         if (settings.width != this.settings!!.getWidth()) return true
         if (settings.height != this.settings!!.getHeight()) return true
         if (settings.fontSize != this.settings!!.getFontSize()) return true
@@ -35,7 +35,7 @@ class SettingsConfigurable : Configurable {
     }
 
     override fun apply() {
-        val settings = Settings.state
+        val settings = SettingsState.instance
         settings.width = this.settings!!.getWidth()
         settings.height = this.settings!!.getHeight()
         settings.fontSize = this.settings!!.getFontSize()
@@ -48,7 +48,7 @@ class SettingsConfigurable : Configurable {
     }
 
     override fun reset() {
-        val settings = Settings.state
+        val settings = SettingsState.instance
         if (this.settings == null) this.settings = SettingsData()
         this.settings!!.setWidth(settings.width)
         this.settings!!.setHeight(settings.height)

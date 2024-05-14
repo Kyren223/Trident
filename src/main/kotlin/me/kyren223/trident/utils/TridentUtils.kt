@@ -7,7 +7,7 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import me.kyren223.trident.data.AutomaticMapping
 import me.kyren223.trident.data.AutomaticReplacing
-import me.kyren223.trident.data.Settings
+import me.kyren223.trident.data.SettingsState
 
 object TridentList {
     private const val PROPERTIES_KEY = "TridentList"
@@ -20,8 +20,8 @@ object TridentList {
     }
     
     private fun getModifiedPath(project: Project, path: String): String {
-        val automaticMapping = Settings.state.automaticMapping
-        val automaticReplacing = Settings.state.automaticReplacing
+        val automaticMapping = SettingsState.instance.automaticMapping
+        val automaticReplacing = SettingsState.instance.automaticReplacing
         val mappings = TridentMappings.get(project)
         
         val hasReplacement = automaticReplacing != AutomaticReplacing.Disabled
@@ -113,7 +113,7 @@ object TridentList {
     }
     
     fun select(project: Project, index: Int): VirtualFile? {
-        val cycle = Settings.state.indexCycling
+        val cycle = SettingsState.instance.indexCycling
         val count = getFiles(project).size
         val i = if (cycle) ((index % count) + count) % count else index
         val files = getFiles(project)
@@ -172,7 +172,7 @@ object TridentMappings {
     }
     
     fun expand(project: Project, path: String): String {
-        val recursive = Settings.state.recursiveMapping
+        val recursive = SettingsState.instance.recursiveMapping
         val mappings = get(project).toList().sortedByDescending { it.first.length }
         var expandedPath = path
         while (true) {
