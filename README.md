@@ -5,11 +5,11 @@
 ##### Effortless file traversal to minimize keystrokes and maximize productivity
 
 <a href="https://plugins.jetbrains.com/plugin/23818-trident" alt="JetBrains Plugin Downloads">
-  <img alt="JetBrains Plugin Downloads" src="https://img.shields.io/jetbrains/plugin/d/23818-trident?style=for-the-badge&labelColor=363a4f&color=a6da95">
+  <img alt="JetBrains Plugin Downloads" src="https://img.shields.io/jetbrains/plugin/d/23818-trident?style=for-the-badge&labelColor=363a4f&color=7aff88">
 </a>
 
 <a href="https://plugins.jetbrains.com/plugin/23818-trident/versions" alt="JetBrains Plugin Version">
-  <img alt="JetBrains Plugin Version" src="https://img.shields.io/jetbrains/plugin/v/23818-trident?style=for-the-badge&labelColor=363a4f&color=b7bdf8">
+  <img alt="JetBrains Plugin Version" src="https://img.shields.io/jetbrains/plugin/v/23818-trident?style=for-the-badge&labelColor=363a4f&color=6ec7f5">
 </a>
 
 <a href="https://plugins.jetbrains.com/plugin/23818-trident/reviews" alt="JetBrains Plugin Rating">
@@ -17,7 +17,7 @@
 </a>
 
 <a href="https://github.com/Kyren223/Trident/releases" alt="GitHub Release">
-  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/Kyren223/Trident?sort=semver&style=for-the-badge&labelColor=363a4f&color=c6a0f6">
+  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/Kyren223/Trident?sort=semver&style=for-the-badge&labelColor=363a4f&color=6ec7f5">
 </a>
 
 </div>
