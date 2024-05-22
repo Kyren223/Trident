@@ -5,7 +5,7 @@
 ##### Effortless file traversal to minimize keystrokes and maximize productivity
 
 <a href="https://plugins.jetbrains.com/plugin/23818-trident" alt="JetBrains Plugin Downloads">
-  <img alt="JetBrains Plugin Downloads" src="https://img.shields.io/jetbrains/plugin/d/23818-trident?style=for-the-badge">
+  <img alt="JetBrains Plugin Downloads" src="https://img.shields.io/jetbrains/plugin/d/23818-trident?style=for-the-badge&labelColor=363a4f&color=a6da95">
 </a>
 
 <a href="https://plugins.jetbrains.com/plugin/23818-trident/versions" alt="JetBrains Plugin Version">
