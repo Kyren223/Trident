@@ -11,7 +11,6 @@ import com.maddyhome.idea.vim.state.mode.Mode
 import me.kyren223.trident.data.SettingsState
 import me.kyren223.trident.utils.TridentList
 import me.kyren223.trident.utils.injectEnterToSelectMapping
-import me.kyren223.trident.utils.setEditorMode
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
 import javax.swing.JComponent
@@ -42,7 +41,8 @@ class TridentListMenu(private val content: String) : DialogWrapper(true) {
         editor.addFocusListener(object : FocusListener {
             override fun focusGained(e: FocusEvent?) {
                 val editor = editor.editor!!.vim
-                setEditorMode(editor, Mode.NORMAL())
+                editor.mode = Mode.NORMAL()
+//                setEditorMode(editor, Mode.NORMAL())
             }
 
             override fun focusLost(e: FocusEvent?) { /* Do nothing */
