@@ -12,10 +12,6 @@
   <img alt="JetBrains Plugin Version" src="https://img.shields.io/jetbrains/plugin/v/23818-trident?style=for-the-badge&labelColor=363a4f&color=6ec7f5">
 </a>
 
-<a href="https://plugins.jetbrains.com/plugin/23818-trident/reviews" alt="JetBrains Plugin Rating">
-  <img alt="JetBrains Plugin Rating" src="https://img.shields.io/jetbrains/plugin/r/stars/23818-trident?style=for-the-badge&labelColor=363a4f&color=f5a97f&link=https%3A%2F%2Fplugins.jetbrains.com%2Fplugin%2F23818-trident%2Freviews">
-</a>
-
 <a href="https://github.com/Kyren223/Trident/releases" alt="GitHub Release">
   <img alt="GitHub Release" src="https://img.shields.io/github/v/release/Kyren223/Trident?sort=semver&style=for-the-badge&labelColor=363a4f&color=6ec7f5">
 </a>
