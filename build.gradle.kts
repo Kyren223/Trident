@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.kyren223"
-version = "2.2.0"
+version = "2.2.1"
 
 repositories {
     mavenCentral()
@@ -31,8 +31,7 @@ tasks {
     }
 
     patchPluginXml {
-        // Supports versions from 2023.2 and up
-        sinceBuild.set("232")
+        sinceBuild.set("233") // Supports versions from 2023.3 and up
     }
 
     signPlugin {
