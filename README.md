@@ -172,10 +172,10 @@ It's recommended to first open an issue before starting to work on a feature.
 
 ## License
 
-This project is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.
+This project is licensed under the AGPLv3 License, see the [LICENSE](LICENSE) file for details.
 
-The logo was designed by me and is copyrighted.
-You may not use it without my permission.
+The logo was designed by Kyren223 and is copyrighted.
+You may not use it without Kyren223's written permission.
 
 ## Contact
 
